@@ -1,0 +1,13 @@
+function real lerp(real a, real b, real coeff)
+{
+  return a * (1 - coeff) + b * coeff;	
+}
+
+program {
+  real aa,bb, cff;
+  write("enter a b c\n");
+  read(aa);
+  read(bb);
+  read(cff);
+  write(lerp(aa,bb,cff), "\n");
+}
