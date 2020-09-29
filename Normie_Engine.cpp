@@ -33,15 +33,7 @@ TERM6 → IDENT | NUMB | RNUMB | not TERM6 | ( TERM ) | IDENT( [TERM] {, TERM})
 
 using namespace std;
 enum type_of_data {NONE, REAL, INT , STRING, FUNCTION };
-/*
-enum type_of_lex {LEX_NULL,LEX_DELIM,LEX_ID,LEX_WORD,LEX_NUMB, LEX_RNUMB,  LEX_FIN};
 
-
-const char* TW [ ] ={ NULL,"and","bool","do","else","end","if","false", "function" ,"int","not","or","program","read","return" , "real" , "then","true","var","while","write"};
-
-const char* TD [ ] = {NULL, ";", "@", ",", "=", "{", "}", "(", ")","==","<", ">", "<=", ">=","!=" , "+", "-", "*", "/"}; //18
-
-*/
 template <  typename ValueType > class Stack
 {
 	deque<ValueType> st;
@@ -72,16 +64,16 @@ public:
 enum type_of_lex
 {
     LEX_NULL,
-     LEX_AND,  LEX_BOOL, LEX_DO, LEX_CASE, LEX_ELSE, LEX_END,LEX_IF, LEX_FALSE, LEX_FOR, LEX_INT, LEX_GOTO, LEX_NOT,LEX_OR, LEX_OF,
-                                 LEX_PROGRAM, LEX_READ, LEX_REAL, LEX_STRING, LEX_TRUE, LEX_WHILE, LEX_FUNCTION, LEX_RETURN,
-                                 LEX_WRITE,
+    LEX_AND,  LEX_BOOL, LEX_DO, LEX_CASE, LEX_ELSE, LEX_END,LEX_IF, LEX_FALSE, LEX_FOR, LEX_INT, LEX_GOTO, LEX_NOT,LEX_OR, LEX_OF,
+    		  LEX_PROGRAM, LEX_READ, LEX_REAL, LEX_STRING, LEX_TRUE, 
+    		  LEX_WHILE, LEX_FUNCTION, LEX_RETURN, LEX_WRITE,
     LEX_SEMICOLON, LEX_FIN, LEX_COMMA, LEX_2DOTS, LEX_ASSIGN, LEX_OPBRAKET,
     LEX_CLBRAKET, LEX_OPFIG, LEX_CLFIG, LEX_EQ, LEX_LESS, LEX_GREAT, LEX_PLUS, LEX_MINUS, LEX_MUL, LEX_DIV, LEX_LEQ, LEX_GEQ, LEX_NEQ,
     LEX_NUMB, LEX_RNUMB, LEX_CONST, LEX_UMINUS,
     LEX_ID,
     POLIZ_LABEL,
     POLIZ_ADDRESS,
-     POLIZ_COUNT,
+    POLIZ_COUNT,
     POLIZ_GO,
     POLIZ_FGO,
     POLIZ_TGO,   
@@ -93,15 +85,17 @@ type_of_lex words[] = {LEX_NULL, LEX_AND,  LEX_BOOL, LEX_DO, LEX_CASE, LEX_ELSE,
                                  LEX_WRITE
                                 };
 type_of_lex  dlms[] = {LEX_NULL, LEX_SEMICOLON, LEX_FIN, LEX_COMMA, LEX_2DOTS, LEX_ASSIGN, LEX_OPBRAKET,
-                                LEX_CLBRAKET, LEX_OPFIG, LEX_CLFIG, LEX_EQ, LEX_LESS, LEX_GREAT, LEX_PLUS, LEX_MINUS, LEX_MUL, LEX_DIV, LEX_LEQ, LEX_GEQ, LEX_NEQ
+                                 LEX_CLBRAKET, LEX_OPFIG, LEX_CLFIG, LEX_EQ, LEX_LESS, LEX_GREAT, LEX_PLUS, LEX_MINUS, LEX_MUL, LEX_DIV, LEX_LEQ, LEX_GEQ, LEX_NEQ
                                };
-const char *  TW [ ] = { NULL,"and","bool","do","case","else","end",
+const char *  TW [ ] = { NULL, "and","bool","do","case","else","end",
                                   "if","false", "for","function", "int","goto","not","or","of","program","read", "real", "return" ,"string",
                                   "true","while","write"
                                 };
+
 const char * TD [ ] = {NULL, ";", "@", ",", ":", "=", "(", ")","{", "}",
                                  "==","<", ">", "+", "-", "*", "/", "<=", ">=", "!="
                                 };
+
 const char* TP[] = {NULL, "GO", "FGO", "TGO"};
 
 enum class_of_lex { LNULL, LDELIM, LID, LWORD, LNUMB, LRNUMB, LPOLIZ, LSTR};
@@ -567,11 +561,6 @@ void Poliz::put(Lex l , long i)
 	//max++;
 }
 
-
-
-
-
-
 Poliz prog(420);
 
 
@@ -935,28 +924,6 @@ int Parser::OP()
 
 }
 
-/*
-
-S → { function TYPE IDENT( [TYPE IDENT] {, TYPE IDENT} ) { D1 OPS } } program { D1 OPS } @
-
-D1 → {  TYPE ID { , ID } ; } 
-TYPE == [ int | real ]
-ID → IDENT | IDENT = CONST 
-
-OPS → { OP }
-OP →  if ( TERM ) OP else OP | while( TERM ) OP | { OPS } | read (IDENT) ; | write (  TERM { , TERM } ) ; | return TERM; | TERM ;
-
-TERM → TERM2 = TERM2 | TERM2
-TERM2 → TERM3 { [ or | and  TERM3 } | TERM3
-TERM3 → TERM$ { [< | > | == etc] TERM4 } | TERM4
-TERM4 → TERM5 { [ + | -   ] TERM5 }
-TERM5 → TERM6 { [ * | /  ] TERM6 }
-TERM6 → IDENT | NUMB | RNUMB | not TERM6 | ( TERM ) | IDENT( [TERM] {, TERM})
-
-
-
-*/
-
 void Parser::check_op ( ) 
 {
 	Lex t1, t2, op;
@@ -1174,46 +1141,6 @@ void Parser::TERM6()
 	else { cout << endl << endl << "ERROR; In line: " << scan.line << " expected operand, but got: " ; throw curr_lex; }
 	
 }
-
-/* struct Data
-{
-	Data(int v) { value = new int; *( (int*) value ) = v; type = INT;}
-	Data(double v) { value = new double; *( (double*) value ) = v; type = REAL;}
-	Data(const char * v) { value = new char [ strlen ( v ) + 1]; strcpy ( (char*)value, v ); type = STRING;}
-
-	type_of_data type;
-	void * value;
-	Data operator + ( Data d)
-	{
-		void * pnt, * pnt2;
-		switch(type)
-		{
-			case INT: pnt = (int*) value;
-			case REAL: pnt = (double*) value;
-			case STRING: pnt = (char*) value;
-		}
-
-		switch(d.type)
-		{
-			case INT: pnt2 = (int*) value;
-			case REAL: pnt2 = (double*) value;
-			case STRING: pnt2 = (char*) value;
-		}
-		return Data( (*pnt) + (*pnt2));
-
-	} 
-	friend ostream& operator << (ostream & s, Data d );
-};
-
-ostream& operator << (ostream & s, Data d )
-{
-	switch(d.type)
-		{
-			case INT: return s << (int*) d.value;
-			case REAL: return s <<  (double*) d.value;
-			case STRING: return s <<  (char*) d.value;
-		}
-} */
 
 
 class  Interpreter
